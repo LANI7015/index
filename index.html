@@ -202,13 +202,29 @@
       "大きな決断ほど、一度に答えを出そうとせず段階的に考えると安定します。",
       "過去の失敗よりも、そこから何を学んだかに意識を向けると次につながります。",
       "周囲からの評価だけでなく、自分自身の納得感を判断基準にしてみましょう。",
+      "新しい環境では焦らず、まずは自分のペースを整えることが大切です。",
+      "考えがまとまらない時は、紙に書き出すことで気持ちを整理しやすくなります。",
+      "頑張る場面と力を抜く場面を分けることで、本来の力を発揮しやすくなります。",
+      "自分の中の矛盾を否定せず、どちらの気持ちも自然なものとして受け止めてみましょう。"
+    ];
 
     function shuffle(array) {
       return [...array].sort(() => Math.random() - 0.5);
     }
 
+    function showList(id, items) {
+      const ul = document.getElementById(id);
+      ul.innerHTML = "";
+      items.forEach(text => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        ul.appendChild(li);
+      });
+    }
+
     document.getElementById("diagnoseBtn").addEventListener("click", () => {
       const birthdate = document.getElementById("birthdate").value;
+      const bloodtype = document.getElementById("bloodtype").value;
       const loading = document.getElementById("loading");
       const result = document.getElementById("result");
       const button = document.getElementById("diagnoseBtn");
@@ -218,28 +234,26 @@
         return;
       }
 
+      if (!bloodtype) {
+        alert("血液型を選択してください。");
+        return;
+      }
+
       result.style.display = "none";
       loading.style.display = "block";
       button.disabled = true;
 
       setTimeout(() => {
-        const main = shuffle(barnumTexts).slice(0, 3).join(" ");
-        const points = shuffle(pointTexts).slice(0, 4);
-
-        document.getElementById("mainText").textContent = main;
-        const ul = document.getElementById("points");
-        ul.innerHTML = "";
-        points.forEach(text => {
-          const li = document.createElement("li");
-          li.textContent = text;
-          ul.appendChild(li);
-        });
+        showList("strengths", shuffle(strengthsTexts).slice(0, 3));
+        showList("weaknesses", shuffle(weaknessesTexts).slice(0, 3));
+        showList("advice", shuffle(adviceTexts).slice(0, 3));
 
         loading.style.display = "none";
         result.style.display = "block";
         button.disabled = false;
-      }, 1400);
+      }, 1000);
     });
   </script>
 </body>
 </html>
+
